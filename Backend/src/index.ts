@@ -4,7 +4,7 @@ import express from "express"
 import cookiesParser from "cookie-parser"
 import authRoutes from './routes/auth.routes'
 import boardRoutes from './routes/board.routes'
-import messageRoutes from './routes/message.routes'
+import shapesRoutes from './routes/shapes.routes'
 
 
 const app=express()
@@ -15,6 +15,6 @@ app.use(cookiesParser())
 
 app.use('/api/auth',authRoutes)
 app.use('/api/board',boardRoutes)
-app.use('/api/message',messageRoutes)
+app.use('/api/shapes',shapesRoutes)
 
 app.listen(PORT,()=>console.log(`Server running on port ${PORT}`))

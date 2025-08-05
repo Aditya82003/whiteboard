@@ -185,10 +185,10 @@ export const handleLeaveboard = async (req: Request, res: Response) => {
                 collaborators: { disconnect: { id: userId } }   //check this logic
             }
         })
-    }catch(error){
+    } catch (error) {
         res.status(500).json({
-            success:false,
-            message:"Server Error"
+            success: false,
+            message: "Server Error"
         })
     }
 }
@@ -224,6 +224,82 @@ export const handleDeleteBoard = async (req: Request, res: Response): Promise<vo
         res.status(500).json({
             success: false,
             message: "Server Error"
+        })
+    }
+}
+
+export const handleShapes = async (req: Request, res: Response): Promise<void> => {
+    try{
+
+        const boardId = req.params.id
+        const userId = req.user?.id         // or basically receiver id  (user id who receiving the shapes)
+        
+        if (!boardId || !userId) {
+            res.status(400).json({
+            success: false,
+            message: "No boardId or userId found"
+        })
+        return
+    }
+    //check for the board
+    const board = await prisma.board.findUnique({
+        where: { id: boardId }
+    })
+    if (!board) {
+        res.status(400).json({
+            success: false,
+            message: "No board found"
+        })
+        return
+    }
+    
+    const allshapes = await prisma.message.findMany({
+        where: { boardId: boardId }
+    })
+            res.status(200).json({
+                success: true,
+                data: {
+                    shapes: allshapes
+                }
+            })
+        }catch(error){
+            res.status(500).json({
+                success:false,
+                message:"Server Error"
+            })
+        }
+}
+
+export const handleSendShapes = async (req: Request, res: Response): Promise<void> => {
+    const boardId = req.params.id
+    const senderId = req.user?.id
+    const { data } = req.body
+    if (!boardId || !senderId) {
+        res.status(400).json({
+            success: false,
+            message: "No boardId or senderId found"
+        })
+        return
+    }
+    try{
+        const shapeMessage= await prisma.message.create({
+            data:{
+                boardId,
+                senderId,
+                data,
+            }
+        })
+        res.status(200).json({
+            success:true,
+            message:"Shape sent successfully",
+            data:{
+                shape:shapeMessage
+            }
+        })
+    }catch(error){
+        res.status(500).json({
+            success:false,
+            message:"Servr error"
         })
     }
 
