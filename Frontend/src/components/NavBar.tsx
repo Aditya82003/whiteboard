@@ -20,7 +20,7 @@ const NavBar: FC = () => {
                                 <AiFillSetting className="w-5 h-5"/>
                             <h1 className="hidden sm:inline ">Setting</h1>
                         </Link>
-                        <Link to="/singin" className="flex gap-2 items-center">
+                        <Link to="/signin" className="flex gap-2 items-center">
                             <LuLogIn className="w-5 h-5"/>
                             <h1 className="hidden sm:inline">LogIn</h1>
                         </Link>
