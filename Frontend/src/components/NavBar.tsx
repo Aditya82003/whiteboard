@@ -24,11 +24,11 @@ const NavBar: FC = () => {
                     <div className="hidden md:flex items-center gap-4">
                         <Link to="setting" className="flex  items-center gap-2 hover:text-primary">
                             <FiSettings className="w-5 h-5" />
-                            <h1>Setting</h1>
+                            <span>Setting</span>
                         </Link>
-                        <Link to="/account" className="flex items-center gap-2 hover:text-primary">
+                        <Link to="/signin" className="flex items-center gap-2 hover:text-primary">
                             <FiUser className="w-5 h-5" />
-                            <h1>User</h1>
+                            <span>User</span>
                         </Link>
                     </div>
                     <div className="md:hidden">
@@ -49,7 +49,7 @@ const NavBar: FC = () => {
                         <span>Setting</span>
                     </Link>
                     <Link
-                        to="/account"
+                        to="/signin"
                         className="flex items-center gap-2 hover:text-primary"
                         onClick={() => setOpened(false)}
                     >

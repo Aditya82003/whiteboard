@@ -94,7 +94,7 @@ export const handleSignUp = async (req: Request, res: Response): Promise<void> =
                 id: newUser.id,
                 fullname: newUser.fullname,
                 email: newUser.email,
-                profile: newUser.profilePic || null
+                profilePic: newUser.profilePic || null
             }
         })
     } catch (error) {
