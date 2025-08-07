@@ -1,15 +1,30 @@
 import { useState, type FC } from "react"
 import { Link } from "react-router"
 import { BiSolidChalkboard } from 'react-icons/bi';
-import { FiSettings, FiUser } from "react-icons/fi";
+import { FiLogOut, FiSettings, FiUser } from "react-icons/fi";
 import { AiOutlineMenu } from 'react-icons/ai';
 import { AiOutlineClose } from 'react-icons/ai';
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "../store/store";
+import { signOutThunk } from "../store/features/auth/authSlice";
+import toast from "react-hot-toast";
 
 
 const NavBar: FC = () => {
+    const dispatch = useDispatch<AppDispatch>()
+    const { user } = useSelector((state: RootState) => state.auth)
     const [opened, setOpened] = useState<boolean>(false)
     const handleClick = () => {
         setOpened((prevState) => !prevState)
+    }
+
+    const handleLogOut=()=>{
+        try{
+            dispatch(signOutThunk())
+            toast.success("Logout")
+        }catch(err){
+            toast.error("Log out failed")
+        }
     }
     return (
         <header className="w-full bg-base-300">
@@ -26,14 +41,24 @@ const NavBar: FC = () => {
                             <FiSettings className="w-5 h-5" />
                             <span>Setting</span>
                         </Link>
-                        <Link to="/signin" className="flex items-center gap-2 hover:text-primary">
+                        {user ?
+                        <div className="flex items-center gap-2 hover:text-primary" onClick={handleLogOut}>
+                            <FiLogOut/>
+                            <span>Logout</span>
+                        </div> :
+                        <Link
+                            to="/signin"
+                            className="flex items-center gap-2 hover:text-primary"
+                            onClick={() => setOpened(false)}
+                        >
                             <FiUser className="w-5 h-5" />
-                            <span>User</span>
+                            <span>Sign in</span>
                         </Link>
+                    }
                     </div>
                     <div className="md:hidden">
                         <div className="size-9 rounded-xl hover:bg-primary/10 flex items-center justify-center" onClick={handleClick}>
-                            {opened ?  (<AiOutlineClose className="w-5 h-5" />):(<AiOutlineMenu className="w-5 h-5" />) }
+                            {opened ? (<AiOutlineClose className="w-5 h-5" />) : (<AiOutlineMenu className="w-5 h-5" />)}
                         </div>
                     </div>
                 </div>
@@ -48,14 +73,20 @@ const NavBar: FC = () => {
                         <FiSettings className="w-5 h-5" />
                         <span>Setting</span>
                     </Link>
-                    <Link
-                        to="/signin"
-                        className="flex items-center gap-2 hover:text-primary"
-                        onClick={() => setOpened(false)}
-                    >
-                        <FiUser className="w-5 h-5" />
-                        <span>User</span>
-                    </Link>
+                    {user ?
+                        <div className="flex items-center gap-2 hover:text-primary" onClick={handleLogOut}>
+                            <FiLogOut/>
+                            <span>Logout</span>
+                        </div> :
+                        <Link
+                            to="/signin"
+                            className="flex items-center gap-2 hover:text-primary"
+                            onClick={() => setOpened(false)}
+                        >
+                            <FiUser className="w-5 h-5" />
+                            <span>Sign in</span>
+                        </Link>
+                    }
                 </div>
             )}
         </header>

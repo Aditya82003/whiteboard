@@ -46,7 +46,7 @@ export const checkAuthThunk = createAsyncThunk<User, void, { rejectValue: string
 export const signUpThunk = createAsyncThunk<SignIn_Up_Response, SignUpState, { rejectValue: string }>("auth/signup", async (SignUpFormData, { rejectWithValue }) => {
     try {
         const res = await axiosInstance.post('/auth/signup', SignUpFormData)
-        return res.data as SignIn_Up_Response
+        return res.data.data as SignIn_Up_Response
     } catch (error) {
         const err = error as AxiosError<{ message: string }>
         const errorMsg = err.response?.data.message || "Signup failed. PLease try again"
@@ -57,7 +57,7 @@ export const signUpThunk = createAsyncThunk<SignIn_Up_Response, SignUpState, { r
 export const signInThunk = createAsyncThunk<SignIn_Up_Response, SignInState, { rejectValue: string }>("auth/sigin", async (SignInFormData, { rejectWithValue }) => {
     try {
         const res = await axiosInstance.post('/auth/signin', SignInFormData)
-        return res.data as SignIn_Up_Response
+        return res.data.data as SignIn_Up_Response
     } catch (error) {
         const err = error as AxiosError<{ message: string }>
         const errorMsg = err.response?.data.message || "Signin failed. PLease try again"
@@ -65,13 +65,14 @@ export const signInThunk = createAsyncThunk<SignIn_Up_Response, SignInState, { r
     }
 })
 
-export const logOutThunk = createAsyncThunk<void, void, { rejectValue: string }>('auth/logout', async (_, { rejectWithValue }) => {
+export const signOutThunk = createAsyncThunk<void, void, { rejectValue: string }>('auth/signout', async (_, { rejectWithValue }) => {
     try {
-        await axiosInstance.post('/auth/signout', {}, { withCredentials: true })
+        const res=await axiosInstance.post('/auth/signout', {}, { withCredentials: true })
+        console.log(res)
         return
     } catch (error) {
         const err = error as AxiosError<{ message: string }>;
-        const errorMsg = err.response?.data?.message || "upload failed";
+        const errorMsg = err.response?.data?.message || "Log out failed";
         return rejectWithValue(errorMsg);
     }
 })
@@ -122,11 +123,11 @@ const authSlice = createSlice({
                 state.isSigningIn = false
                 state.error = action.payload || "Sign in failed"
             })
-            .addCase(logOutThunk.fulfilled, (state) => {
+            .addCase(signOutThunk.fulfilled, (state) => {
                 state.user = null
                 state.error = null
             })
-            .addCase(logOutThunk.rejected, (state, action) => {
+            .addCase(signOutThunk.rejected, (state, action) => {
                 state.error = action.payload || "unavailable to logout"
             })
     }

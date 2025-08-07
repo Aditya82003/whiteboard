@@ -59,6 +59,7 @@ export const handleSignUp = async (req: Request, res: Response): Promise<void> =
     try {
         const { fullname, email, password } = req.body
         console.log(fullname,email,password)
+        console.log(req.body)
 
         if (!fullname || !email || !password) {
             res.status(400).json({
@@ -106,9 +107,9 @@ export const handleSignUp = async (req: Request, res: Response): Promise<void> =
 }
 
 export const handleSignOut = (req: Request, res: Response) => {
-     res.clearCookie("token", {
+     res.clearCookie("jwt", {
         httpOnly: true,
-        secure: true,
+        secure:true,
         sameSite: "none",
         path: "/",
     });

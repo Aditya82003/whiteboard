@@ -71,6 +71,7 @@ const Auth: FC<AuthProps> = ({ isSignIn }) => {
                 const result = await dispatch(signInThunk({ email, password }))
                 if (signInThunk.fulfilled.match(result)) {
                     toast.success("Sign in successful")
+                    console.log(result)
                     navigate('/')
                 } else {
                     toast.error(result.payload || "Sign in failed")
@@ -81,6 +82,7 @@ const Auth: FC<AuthProps> = ({ isSignIn }) => {
                 const result = await dispatch(signUpThunk({ fullname, email, password }))
                 if (signUpThunk.fulfilled.match(result)) {
                     toast.success("Sign up successful")
+                    console.log(result)
                     navigate('/')
                 } else {
                     toast.error(result.payload || "Sign in failed")
@@ -134,7 +136,7 @@ const Auth: FC<AuthProps> = ({ isSignIn }) => {
                             </div>
                             <button
                         disabled={isSigningIn}
-                            type="submit" className="flex justify-center  bg-black  w-full py-2 px-6 rounded-lg mt-4 ">{isSigningIn?(<FiLoader className="w-6 h-6"/>):"Sign in"}</button>
+                            type="submit" className="flex justify-center  bg-black  w-full py-2 px-6 rounded-lg mt-4 ">{isSigningIn?(<FiLoader className="animate-spin w-6 h-6"/>):"Sign in"}</button>
                         </form>
                         <p className="tracking-tight">Didn't have an account?  <Link to="/signup" className="text-black">Create Account</Link> </p>
                     </div>
@@ -183,7 +185,7 @@ const Auth: FC<AuthProps> = ({ isSignIn }) => {
                                     }
                                 </div>
                             </div>
-                            <button type="submit" className="flex justify-center  bg-black  w-full py-2 px-6 rounded-lg mt-4">{isSigningUp?(<FiLoader className="w-6-h-6"/>):"Sign up"}</button>
+                            <button type="submit" className="flex justify-center  bg-black  w-full py-2 px-6 rounded-lg mt-4">{isSigningUp?(<FiLoader className="animate-spin w-6-h-6"/>):"Sign up"}</button>
                         </form>
                         <p className="tracking-tight">Already have an account?  <Link to="/signin" className="text-black">Sign In</Link> </p>
                     </div>

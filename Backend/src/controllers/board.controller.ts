@@ -3,7 +3,7 @@ import { prisma } from "../lib/prisma";
 
 export const handleCreateBoard = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { ownerId } = req.body
+        const  ownerId  = req.user?.id
         if (!ownerId) {
             res.status(400).json({
                 success: false,
@@ -89,7 +89,7 @@ export const handleJoinBoard = async (req: Request, res: Response) => {
         const boardId = req.params.id
         const userId = req.user?.id
 
-        if (!boardId || userId) {
+        if (!boardId || !userId) {
             res.status(400).json({
                 success: false,
                 message: "User ID or Board ID missing"
@@ -121,17 +121,28 @@ export const handleJoinBoard = async (req: Request, res: Response) => {
             })
             return
         }
-        await prisma.board.update({
+        const updatedBoard=await prisma.board.update({
             where: { id: boardId },
             data: {
                 collaborators: {
                     connect: { id: userId }
                 }
+            },
+            include:{
+                collaborators:{
+                    select:{id:true,fullname:true}
+                },
+                owner:{
+                    select:{id:true,fullname:true}
+                }
             }
         })
         res.status(200).json({
             success: true,
-            message: "Successfully Joined"
+            message: "Successfully Joined",
+            data:{
+                board:updatedBoard
+            }
         })
     } catch (error) {
         res.status(500).json({
