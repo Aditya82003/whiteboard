@@ -58,8 +58,6 @@ export const handleSignin = async (req: Request, res: Response): Promise<void> =
 export const handleSignUp = async (req: Request, res: Response): Promise<void> => {
     try {
         const { fullname, email, password } = req.body
-        console.log(fullname,email,password)
-        console.log(req.body)
 
         if (!fullname || !email || !password) {
             res.status(400).json({
@@ -124,7 +122,6 @@ export const handleUploadProfile = (req: Request, res: Response) => {
 
 export const handleCheckAuth = (req: Request, res: Response) => {
     try{
-        console.log(req.user)
         res.status(200).json({
             success:true,
             data:{

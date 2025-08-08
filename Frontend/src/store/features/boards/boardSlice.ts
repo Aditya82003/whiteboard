@@ -23,8 +23,8 @@ type BoardState = {
 }
 
 const initialState: BoardState = {
-    boards: [],
     currentBoard: null,
+    boards: [],
     isBoardLoading: false,
     error: null
 }
@@ -41,7 +41,7 @@ export const fetchBoardsThunk = createAsyncThunk<Board[], void, { rejectValue: s
 export const createBoardThunk = createAsyncThunk<Board, void, { rejectValue: string }>("board/createBoard", async (_, { rejectWithValue }) => {
     try {
         const res = await axiosInstance.post('/board')
-        return res.data.board
+        return res.data.data.board
     } catch (err) {
         const error = err as AxiosError<{ message: string }>;
         return rejectWithValue(error.response?.data.message || "Unavailable to create boards")

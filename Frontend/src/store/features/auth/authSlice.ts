@@ -37,7 +37,7 @@ const initialState: AuthState = {
 export const checkAuthThunk = createAsyncThunk<User, void, { rejectValue: string }>("auth/check", async (_, thunkAPI) => {
     try {
         const res = await axiosInstance.get('/auth/check');
-        return res.data as User
+        return res.data.data.user as User
     } catch (err: any) {
         return thunkAPI.rejectWithValue(err.response?.data?.message || "Authentication check failed");
     }
